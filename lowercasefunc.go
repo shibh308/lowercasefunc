@@ -41,7 +41,7 @@ func getFuncObj(pkg *types.Package, name string) types.Object {
 }
 
 func run(pass *analysis.Pass) (interface{}, error) {
-	var result []LowerCaseFunc
+	var result []FuncPair
 
 	exportedFunc := make(map[string]*ast.FuncDecl)
 	unexportedFunc := make(map[string]*ast.FuncDecl)
@@ -85,7 +85,7 @@ func run(pass *analysis.Pass) (interface{}, error) {
 		}
 		pass.Reportf(fd.Pos(), s + strings.Join(cpStr, ", ") + "]}\n")
 		result = append(result,
-			LowerCaseFunc{
+			FuncPair{
 				UpperDecl: fd,
 				LowerDecl: ufd,
 				CalledPos: calledPos,
@@ -94,14 +94,14 @@ func run(pass *analysis.Pass) (interface{}, error) {
 	return nil, nil
 }
 
-type LowerCaseFunc struct{
+type FuncPair struct{
 	UpperDecl    *ast.FuncDecl
 	LowerDecl    *ast.FuncDecl
 	CalledPos     []token.Pos
 }
 
 func runDetect(pass *analysis.Pass) (interface{}, error) {
-	var result []LowerCaseFunc
+	var result []FuncPair
 
 	exportedFunc := make(map[string]*ast.FuncDecl)
 	unexportedFunc := make(map[string]*ast.FuncDecl)
@@ -137,7 +137,7 @@ func runDetect(pass *analysis.Pass) (interface{}, error) {
 			return true
 		})
 		result = append(result,
-			LowerCaseFunc{
+			FuncPair{
 				UpperDecl: fd,
 				LowerDecl: ufd,
 				CalledPos: calledPos,
