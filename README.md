@@ -1,1 +1,2 @@
 # lowercasefunc
+PascalCaseの中でcamelCaseの関数を呼び出している部分を検知してくれるツール
